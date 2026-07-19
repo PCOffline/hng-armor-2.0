@@ -82,7 +82,8 @@
   .roster{display:flex;flex-direction:column;gap:14px}
   .fac{border:1px solid var(--line);background:var(--panel)}
   .fac-h{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--panel2)}
-  .fac-h .emblem{height:18px;width:auto;display:block;flex:none}
+  .fac-h .emblem{height:24px;width:auto;display:block;flex:none}
+  .fac-h .emblem.flag{box-shadow:0 0 0 1px rgba(0,0,0,.35)}
   .fac-h .name{font-family:"Oswald",sans-serif;font-weight:500;letter-spacing:.16em;text-transform:uppercase;font-size:13px;color:var(--sand)}
   .tank{padding:11px 14px;border-bottom:1px dashed rgba(58,69,38,.5)}
   .tank:last-child{border-bottom:none}
@@ -131,27 +132,23 @@
 </footer>
 
 <script>
-/* ---------- faction emblems (correct: Reichskriegsflagge, US star-in-circle) ---------- */
+/* ---------- faction emblems: real Wikimedia assets, hand-drawn fallbacks ---------- */
+const WIKI="https://commons.wikimedia.org/wiki/Special:FilePath/";
+const file={
+  ger:"War_Ensign_of_Germany_(1903%E2%80%931919).svg",   // Imperial Reichskriegsflagge (PD, no swastika)
+  usa:"US_Army_Air_Roundel.svg",                          // white star in blue circle
+  sov:"Roundel_of_the_Soviet_Union_(1945%E2%80%931991).svg" // red star
+};
 const emblem={
-  ger:`<svg class="emblem" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" aria-label="Reichskriegsflagge">
-        <rect width="30" height="20" fill="#efe9da"/>
-        <rect x="0" y="8.4" width="30" height="3.2" fill="#141414"/>
-        <rect x="10.4" y="0" width="3.2" height="20" fill="#141414"/>
-        <rect x="0" y="0" width="9" height="2.7" fill="#141414"/>
-        <rect x="0" y="5.3" width="9" height="2.7" fill="#b8121b"/>
-        <g transform="translate(12,10)">
-          <path d="M-3,-1 L-1,-1 L-1,-3 L1,-3 L1,-1 L3,-1 L3,1 L1,1 L1,3 L-1,3 L-1,1 L-3,1 Z" fill="#141414" stroke="#efe9da" stroke-width="0.5"/>
-        </g>
-      </svg>`,
-  usa:`<svg class="emblem" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-label="US star insignia">
-        <circle cx="10" cy="10" r="9" fill="#16233f"/>
-        <circle cx="10" cy="10" r="9" fill="none" stroke="#eceff5" stroke-width="1.5"/>
-        <path d="M10 3.4 L12.05 8.05 L17 8.5 L13.2 11.8 L14.4 16.6 L10 14 L5.6 16.6 L6.8 11.8 L3 8.5 L7.95 8.05 Z" fill="#eceff5"/>
-      </svg>`,
-  sov:`<svg class="emblem" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-label="Soviet star">
-        <circle cx="10" cy="10" r="9" fill="#b8121b"/>
-        <path d="M10 3.4 L12.05 8.05 L17 8.5 L13.2 11.8 L14.4 16.6 L10 14 L5.6 16.6 L6.8 11.8 L3 8.5 L7.95 8.05 Z" fill="#e2c15a"/>
-      </svg>`
+  ger:`<img class="emblem flag" data-fac="ger" alt="Reichskriegsflagge" src="${WIKI}${file.ger}">`,
+  usa:`<img class="emblem" data-fac="usa" alt="US star insignia" src="${WIKI}${file.usa}">`,
+  sov:`<img class="emblem" data-fac="sov" alt="Soviet star" src="${WIKI}${file.sov}">`
+};
+/* offline fallbacks (used only if the CDN image fails to load) */
+const FB={
+  ger:`<svg viewBox="0 0 45 30" xmlns="http://www.w3.org/2000/svg"><rect width="45" height="30" fill="#f0ead9"/><rect x="0" y="12.4" width="45" height="5.2" fill="#1a1a1a"/><rect x="14.4" y="0" width="5.2" height="30" fill="#1a1a1a"/><rect x="0" y="0" width="14.4" height="4.13" fill="#1a1a1a"/><rect x="0" y="8.26" width="14.4" height="4.14" fill="#c01822"/><circle cx="17" cy="15" r="5.4" fill="#f0ead9"/><rect x="15.55" y="10.1" width="2.9" height="9.8" fill="#1a1a1a"/><rect x="12.1" y="13.55" width="9.8" height="2.9" fill="#1a1a1a"/></svg>`,
+  usa:`<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="9" fill="#16233f"/><circle cx="10" cy="10" r="9" fill="none" stroke="#eceff5" stroke-width="1.5"/><path d="M10 3.4 L12.05 8.05 L17 8.5 L13.2 11.8 L14.4 16.6 L10 14 L5.6 16.6 L6.8 11.8 L3 8.5 L7.95 8.05 Z" fill="#eceff5"/></svg>`,
+  sov:`<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="9" fill="#b8121b"/><path d="M10 3.4 L12.05 8.05 L17 8.5 L13.2 11.8 L14.4 16.6 L10 14 L5.6 16.6 L6.8 11.8 L3 8.5 L7.95 8.05 Z" fill="#e2c15a"/></svg>`
 };
 const facName={ger:"Germany",usa:"United States",sov:"Soviet Union"};
 const COL={r:"var(--red)",o:"var(--orange)",g:"var(--green)"};
@@ -299,6 +296,11 @@ function select(id){
   document.querySelectorAll(".klass").forEach(s=>s.classList.toggle("show",s.id==="k-"+id));
   window.scrollTo({top:0,behavior:"smooth"});
 }
+
+/* swap to hand-drawn fallback if a Wikimedia asset fails to load */
+document.querySelectorAll("img.emblem").forEach(img=>{
+  img.onerror=()=>{img.onerror=null;img.src="data:image/svg+xml;utf8,"+encodeURIComponent(FB[img.dataset.fac]);};
+});
 </script>
 </body>
 </html>
