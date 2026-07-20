@@ -1,209 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>H&G Armor Field Manual</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --field:#12160d; --field2:#191e11; --panel:#1e2515; --panel2:#252d18;
-    --line:#3a4526; --olive:#5a6b34; --sand:#cdbd93; --sand-dim:#8f8564;
-    --stencil:#e2cf8f; --hl:#f5f0e2;
-    --red:#c0392b; --orange:#d98a2b; --green:#7cb342; --cas:#2b3320;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    background:
-      radial-gradient(120% 90% at 20% -10%, #1c2213 0%, transparent 55%),
-      repeating-linear-gradient(0deg, transparent 0 38px, rgba(0,0,0,.12) 38px 39px),
-      var(--field);
-    color:var(--sand); font-family:"IBM Plex Mono",monospace; line-height:1.45;
-    -webkit-font-smoothing:antialiased; padding:0 0 60px;
-  }
-  b{color:var(--hl);font-weight:600}
-  a{color:var(--olive)}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-
-  header{border-bottom:2px solid var(--line);background:linear-gradient(180deg,#171c10,#12160d);position:relative;overflow:hidden}
-  header::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 14px,rgba(226,207,143,.03) 14px 15px);pointer-events:none}
-  .head-inner{padding:34px 20px 26px;max-width:1180px;margin:0 auto;position:relative}
-  .eyebrow{font-family:"Oswald",sans-serif;font-weight:500;letter-spacing:.42em;text-transform:uppercase;font-size:12px;color:var(--sand-dim);display:flex;align-items:center;gap:12px}
-  .eyebrow::after{content:"";height:1px;flex:1;background:var(--line)}
-  h1{font-family:"Oswald",sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(34px,7vw,68px);line-height:.92;color:var(--stencil);margin:10px 0 4px}
-  h1 span{-webkit-text-stroke:1px var(--olive);color:transparent}
-  .subhead{font-size:13px;color:var(--sand-dim);max-width:720px;margin-top:8px}
-  .legend{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:22px}
-  .lg{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--sand-dim)}
-  .sw{width:26px;height:13px;border:1px solid rgba(0,0,0,.4);flex:none}
-  .sw.r{background:var(--red)} .sw.o{background:var(--orange)} .sw.g{background:var(--green)}
-  .lg b{color:var(--sand)}
-  .lg.oc .chip-out{margin:0}
-
-  .rules{background:var(--field2);border-bottom:1px solid var(--line)}
-  .rules-inner{max-width:1180px;margin:0 auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px 26px}
-  .rule{display:flex;gap:12px;align-items:flex-start;font-size:12.5px;color:var(--sand-dim)}
-  .rule .n{font-family:"Oswald",sans-serif;font-weight:700;color:var(--stencil);font-size:20px;line-height:1;flex:none;width:26px}
-
-  nav.classnav{position:sticky;top:0;z-index:20;background:rgba(18,22,13,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
-  .cn-inner{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
-  .cn-btn{font-family:"Oswald",sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-size:12.5px;color:var(--sand-dim);background:none;border:none;border-bottom:3px solid transparent;padding:15px 13px 12px;cursor:pointer;white-space:nowrap;transition:.15s}
-  .cn-btn:hover{color:var(--sand)}
-  .cn-btn.on{color:var(--stencil);border-bottom-color:var(--stencil)}
-
-  section.klass{padding-top:38px;display:none}
-  section.klass.show{display:block;animation:fade .25s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .k-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}
-  .k-head h2{font-family:"Oswald",sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(24px,4vw,38px);color:var(--stencil)}
-  .k-tag{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--sand-dim);font-family:"Oswald",sans-serif}
-  .k-desc{font-size:13px;color:var(--sand-dim);max-width:820px;margin-bottom:22px}
-
-  .diagram{background:var(--panel);border:1px solid var(--line);padding:20px 22px 14px;margin-bottom:20px}
-  .diagram .dh{font-family:"Oswald",sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:11px;color:var(--sand-dim);margin-bottom:10px}
-  .diagram svg{width:100%;max-width:560px;height:auto;display:block;margin:0 auto}
-
-  .roster{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;align-items:start}
-  .fac{border:1px solid var(--line);background:var(--panel)}
-  .fac-h{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--panel2)}
-  .fac-h .emblem{height:26px;width:auto;display:block;flex:none}
-  .fac-h .name{font-family:"Oswald",sans-serif;font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--sand)}
-  .tank{padding:12px 14px;border-bottom:1px dashed rgba(58,69,38,.5)}
-  .tank:last-child{border-bottom:none}
-  .tank.out{border-left:3px solid var(--stencil);padding-left:11px;background:linear-gradient(90deg,rgba(226,207,143,.05),transparent 60%)}
-  .tank .tn{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-  .tank .nm{font-family:"Oswald",sans-serif;font-weight:500;font-size:15px;color:var(--stencil);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-  .chip-out{font-family:"Oswald",sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--field);background:var(--stencil);padding:2px 6px;flex:none;align-self:center}
-  .tank .pill{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--line);color:var(--sand-dim);font-family:"Oswald",sans-serif;flex:none}
-  .hits{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:10px}
-  .hit .bar{height:24px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.45);font-size:11px;font-weight:600;color:#10140c}
-  .hit .bar.cas{background:repeating-linear-gradient(45deg,#242c17 0 4px,#1c2213 4px 8px);color:var(--sand-dim);font-size:8.5px;border-style:dashed}
-  .hit .fl{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sand-dim);margin-top:4px;text-align:center}
-  .ol{font-size:11.5px;color:var(--sand-dim);margin-top:9px;display:flex;gap:8px;align-items:flex-start}
-  .ol .tag{font-family:"Oswald",sans-serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--stencil);border:1px solid var(--line);padding:1px 5px;flex:none;margin-top:1px}
-
-  .footnote{margin-top:44px;border-top:1px solid var(--line);padding-top:20px;font-size:11.5px;color:var(--sand-dim);max-width:860px}
-  @media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}}
-</style>
-</head>
-<body>
-
-<header>
-  <div class="head-inner">
-    <div class="eyebrow">Heroes &amp; Generals · Armor Doctrine</div>
-    <h1>Where to<br><span>Shoot</span> It</h1>
-    <p class="subhead">Every cell below is a real hull-plate thickness in millimetres. Green plates you can punch through; red plates bounce you. Read the colour, aim for green — and watch for the tanks flagged <span class="chip-out">Outlier</span>, whose armor breaks the usual pattern.</p>
-    <div class="legend">
-      <div class="lg"><span class="sw g"></span><b>≤ 40 mm</b> — most guns &amp; AT pen it</div>
-      <div class="lg"><span class="sw o"></span><b>41–80 mm</b> — needs a real gun / APCR</div>
-      <div class="lg"><span class="sw r"></span><b>&gt; 80 mm</b> — bounces most shots</div>
-      <div class="lg oc"><span class="chip-out">Outlier</span> <b>armor behaves unexpectedly</b></div>
-    </div>
-  </div>
-</header>
-
-<div class="rules">
-  <div class="rules-inner">
-    <div class="rule"><span class="n">1</span><p>Once a shell <b>penetrates</b>, damage is flat RNG anywhere inside. The whole game is getting the pen — thickness (and slope) is what stops you.</p></div>
-    <div class="rule"><span class="n">2</span><p>Shoot the <b>gun/mantlet first</b>: roughly an 80% chance the enemy can't fire, ~20% chance of a longer reload.</p></div>
-    <div class="rule"><span class="n">3</span><p>If it runs, kill the <b>tracks or engine</b>, then flank at leisure. <b>HE</b> barely scratches armor — load <b>APCR</b> for penetration.</p></div>
-    <div class="rule"><span class="n">4</span><p>Numbers are flat plate thickness. <b>Sloped fronts</b> (Tiger II, T-70, T-34) resist more than the number suggests — flank rather than trade head-on.</p></div>
-  </div>
-</div>
-
-<nav class="classnav"><div class="cn-inner" id="cn"></div></nav>
-<div class="wrap" id="sections"></div>
-
-<div class="wrap">
-  <p class="footnote" id="footnote"></p>
-</div>
-
-<script>
-/* faction badges — Fandom image CDN (direct, embeddable host), hand-drawn fallbacks */
-const CDN="https://static.wikia.nocookie.net/heroesandgenerals/images/";
-const file={
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>H&G Armor Field Manual</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"><style>:root{--field:#12160d;--field2:#191e11;--panel:#1e2515;--panel2:#252d18;--line:#3a4526;--olive:#5a6b34;--sand:#cdbd93;--sand-dim:#8f8564;--stencil:#e2cf8f;--hl:#f5f0e2;--red:#c0392b;--orange:#d98a2b;--green:#7cb342;--cas:#2b3320}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:radial-gradient(120% 90% at 20% -10%,#1c2213 0,transparent 55%),repeating-linear-gradient(0deg,transparent 0 38px,rgba(0,0,0,.12) 38px 39px),var(--field);color:var(--sand);font-family:"IBM Plex Mono",monospace;line-height:1.45;-webkit-font-smoothing:antialiased;padding:0 0 60px}b{color:var(--hl);font-weight:600}a{color:var(--olive)}.wrap{max-width:1180px;margin:0 auto;padding:0 20px}header{border-bottom:2px solid var(--line);background:linear-gradient(180deg,#171c10,#12160d);position:relative;overflow:hidden}header::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 14px,rgba(226,207,143,.03) 14px 15px);pointer-events:none}.head-inner{padding:34px 20px 26px;max-width:1180px;margin:0 auto;position:relative}.eyebrow{font-family:Oswald,sans-serif;font-weight:500;letter-spacing:.42em;text-transform:uppercase;font-size:12px;color:var(--sand-dim);display:flex;align-items:center;gap:12px}.eyebrow::after{content:"";height:1px;flex:1;background:var(--line)}h1{font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(34px,7vw,68px);line-height:.92;color:var(--stencil);margin:10px 0 4px}h1 span{-webkit-text-stroke:1px var(--olive);color:transparent}.subhead{font-size:13px;color:var(--sand-dim);max-width:720px;margin-top:8px}.legend{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:22px}.lg{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--sand-dim)}.sw{width:26px;height:13px;border:1px solid rgba(0,0,0,.4);flex:none}.sw.r{background:var(--red)}.sw.o{background:var(--orange)}.sw.g{background:var(--green)}.lg b{color:var(--sand)}.tag-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:16px}.tag-legend .tl{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--sand-dim)}.rules{background:var(--field2);border-bottom:1px solid var(--line)}.rules-inner{max-width:1180px;margin:0 auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px 26px}.rule{display:flex;gap:12px;align-items:flex-start;font-size:12.5px;color:var(--sand-dim)}.rule .n{font-family:Oswald,sans-serif;font-weight:700;color:var(--stencil);font-size:20px;line-height:1;flex:none;width:26px}nav.classnav{position:sticky;top:0;z-index:20;background:rgba(18,22,13,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}.cn-inner{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}.cn-btn{font-family:Oswald,sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.13em;font-size:12.5px;color:var(--sand-dim);background:0 0;border:none;border-bottom:3px solid transparent;padding:15px 13px 12px;cursor:pointer;white-space:nowrap;transition:.15s}.cn-btn:hover{color:var(--sand)}.cn-btn.on{color:var(--stencil);border-bottom-color:var(--stencil)}section.klass{padding-top:38px;display:none}section.klass.show{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.k-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}.k-head h2{font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(24px,4vw,38px);color:var(--stencil)}.k-tag{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--sand-dim);font-family:Oswald,sans-serif}.k-desc{font-size:13px;color:var(--sand-dim);max-width:820px;margin-bottom:22px}.diagram{background:var(--panel);border:1px solid var(--line);padding:20px 22px 14px;margin-bottom:20px}.diagram .dh{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:11px;color:var(--sand-dim);margin-bottom:10px}.diagram svg{width:100%;max-width:560px;height:auto;display:block;margin:0 auto}.roster{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;align-items:start}.fac{border:1px solid var(--line);background:var(--panel)}.fac-h{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--panel2)}.fac-h .emblem{height:26px;width:auto;display:block;flex:none}.fac-h .name{font-family:Oswald,sans-serif;font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--sand)}.tank{padding:12px 14px;border-bottom:1px dashed rgba(58,69,38,.5)}.tank:last-child{border-bottom:none}.tank.out{border-left:3px solid var(--stencil);padding-left:11px;background:linear-gradient(90deg,rgba(226,207,143,.05),transparent 60%)}.tank .tn{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.tank .nm{font-family:Oswald,sans-serif;font-weight:500;font-size:15px;color:var(--stencil)}.tank .tags{display:flex;gap:5px;flex-wrap:wrap;align-items:center}.chip{font-family:Oswald,sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:2px 6px;flex:none}.chip-out{color:var(--field);background:var(--stencil)}.chip-sloped{color:var(--hl);border:1px solid rgba(217,138,43,.5);background:rgba(217,138,43,.1)}.chip-open{color:var(--hl);border:1px solid rgba(192,57,43,.5);background:rgba(192,57,43,.12)}.hits{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:10px}.hit .bar{height:24px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.45);font-size:11px;font-weight:600;color:#10140c}.hit .bar.cas{background:repeating-linear-gradient(45deg,#242c17 0 4px,#1c2213 4px 8px);color:var(--sand-dim);font-size:8.5px;border-style:dashed}.hit .fl{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sand-dim);margin-top:4px;text-align:center}.ol{font-size:11.5px;color:var(--sand-dim);margin-top:9px;display:flex;gap:8px;align-items:flex-start}.ol .tag{font-family:Oswald,sans-serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--stencil);border:1px solid var(--line);padding:1px 5px;flex:none;margin-top:1px}.footnote{margin-top:44px;border-top:1px solid var(--line);padding-top:20px;font-size:11.5px;color:var(--sand-dim);max-width:860px}@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}}</style></head><body><header><div class="head-inner"><div class="eyebrow">Heroes &amp; Generals · Armor Doctrine</div><h1>Where to<br><span>Shoot</span>It</h1><p class="subhead">Every cell is a real hull-plate thickness in millimetres. Green plates you can punch through; red plates bounce you. Read the colour, aim for green — and watch for<span class="chip chip-out">Outlier</span>tanks whose armor breaks the class pattern.</p><div class="legend"><div class="lg"><span class="sw g"></span><b>≤ 40 mm</b>— most guns &amp; AT pen it</div><div class="lg"><span class="sw o"></span><b>41–80 mm</b>— needs a real gun / APCR</div><div class="lg"><span class="sw r"></span><b>&gt; 80 mm</b>— bounces most shots</div></div><div class="tag-legend"><div class="tl"><span class="chip chip-out">Outlier</span>armor behaves unexpectedly</div><div class="tl"><span class="chip chip-sloped">Sloped</span>effective armor &gt; raw mm</div><div class="tl"><span class="chip chip-open">Open top</span>vulnerable to HE &amp; grenades</div></div></div></header><div class="rules"><div class="rules-inner"><div class="rule"><span class="n">1</span><p>Once a shell<b>penetrates</b>, damage is flat RNG anywhere inside. The whole game is getting the pen — thickness (and slope) is what stops you.</p></div><div class="rule"><span class="n">2</span><p>Shoot the<b>gun/mantlet first</b>: roughly an 80% chance the enemy can't fire, ~20% chance of a longer reload.</p></div><div class="rule"><span class="n">3</span><p>If it runs, kill the<b>tracks or engine</b>, then flank at leisure.<b>HE</b>barely scratches armor — load<b>APCR</b>for penetration.</p></div><div class="rule"><span class="n">4</span><p>Numbers are flat plate thickness.<b>Sloped</b>-tagged tanks resist more than the number suggests — flank rather than trade head-on.</p></div></div></div><nav class="classnav"><div class="cn-inner" id="cn"></div></nav><div class="wrap" id="sections"></div><div class="wrap"><p class="footnote" id="footnote"></p></div><script>const CDN="https://static.wikia.nocookie.net/heroesandgenerals/images/";
+const imgf={
   ger:CDN+"3/3e/Icon-GR-Symbol.png/revision/latest/scale-to-width-down/64",
   usa:CDN+"8/83/Icon-US-Symbol.png/revision/latest/scale-to-width-down/64",
   sov:CDN+"2/28/Icon-RU-Symbol.png/revision/latest/scale-to-width-down/64"
 };
-const emblem={
-  ger:`<img class="emblem" data-fac="ger" alt="Germany" src="${file.ger}">`,
-  usa:`<img class="emblem" data-fac="usa" alt="United States" src="${file.usa}">`,
-  sov:`<img class="emblem" data-fac="sov" alt="Soviet Union" src="${file.sov}">`
+const emb={
+  ger:`<img class="emblem" data-fac="ger" alt="Germany" src="${imgf.ger}">`,
+  usa:`<img class="emblem" data-fac="usa" alt="United States" src="${imgf.usa}">`,
+  sov:`<img class="emblem" data-fac="sov" alt="Soviet Union" src="${imgf.sov}">`
 };
 const FB={
   ger:`<svg viewBox="0 0 45 30" xmlns="http://www.w3.org/2000/svg"><rect width="45" height="30" fill="#f0ead9"/><rect x="0" y="12.4" width="45" height="5.2" fill="#1a1a1a"/><rect x="14.4" y="0" width="5.2" height="30" fill="#1a1a1a"/><rect x="0" y="0" width="14.4" height="4.13" fill="#1a1a1a"/><rect x="0" y="8.26" width="14.4" height="4.14" fill="#c01822"/><circle cx="17" cy="15" r="5.4" fill="#f0ead9"/><rect x="15.55" y="10.1" width="2.9" height="9.8" fill="#1a1a1a"/><rect x="12.1" y="13.55" width="9.8" height="2.9" fill="#1a1a1a"/></svg>`,
   usa:`<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="9" fill="#16233f"/><circle cx="10" cy="10" r="9" fill="none" stroke="#eceff5" stroke-width="1.5"/><path d="M10 3.4 L12.05 8.05 L17 8.5 L13.2 11.8 L14.4 16.6 L10 14 L5.6 16.6 L6.8 11.8 L3 8.5 L7.95 8.05 Z" fill="#eceff5"/></svg>`,
   sov:`<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="9" fill="#b8121b"/><path d="M10 3.4 L12.05 8.05 L17 8.5 L13.2 11.8 L14.4 16.6 L10 14 L5.6 16.6 L6.8 11.8 L3 8.5 L7.95 8.05 Z" fill="#e2c15a"/></svg>`
 };
-const facName={ger:"Germany",usa:"United States",sov:"Soviet Union"};
+const facN={ger:"Germany",usa:"United States",sov:"Soviet Union"};
 
-/* colour by plate thickness (mm). null = fixed casemate / open top (no plate) */
-function col(mm){ if(mm==null) return "cas"; if(mm<=40) return "green"; if(mm<=80) return "orange"; return "red"; }
-const CVAR={green:"var(--green)",orange:"var(--orange)",red:"var(--red)"};
-const facing=[["f","Front"],["tur","Turret"],["s","Side"],["r","Rear"],["t","Roof"]];
+function col(mm){if(mm==null)return"cas";if(mm<=40)return"green";if(mm<=80)return"orange";return"red"}
+const CV={green:"var(--green)",orange:"var(--orange)",red:"var(--red)"};
+const fac=[["f","Front"],["tur","Turret"],["s","Side"],["r","Rear"],["t","Roof"]];
 
-/* side-profile silhouette per class; zones coloured to the class's typical plates */
+/* tag chip HTML */
+const CHIP={
+  out:'<span class="chip chip-out">Outlier</span>',
+  sloped:'<span class="chip chip-sloped">Sloped</span>',
+  open:'<span class="chip chip-open">Open top</span>'
+};
+
 function diagram(kind){
-  const R=CVAR.red,O=CVAR.orange,G=CVAR.green;
-  const Z={
-    light:{f:G,tur:G,t:G,casemate:false},
-    medium:{f:O,tur:O,t:G,casemate:false},
-    heavy:{f:R,tur:R,t:G,casemate:false},
-    mtd:{f:O,tur:null,t:G,casemate:true},
-    htd:{f:O,tur:null,t:G,casemate:true}
-  }[kind];
-  const S=(inner)=>`<svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${kind} armor profile">
-    <defs><style>.o{stroke:#0c0f08;stroke-width:1.4}.tk{fill:#171c10}.lbl{font:600 10px 'IBM Plex Mono',monospace;fill:var(--sand)}</style></defs>${inner}</svg>`;
-  const wheels=(xs)=>xs.map(x=>`<circle cx="${x}" cy="178" r="10" fill="#20281733" class="o"/>`).join("");
-  const tracks=`<ellipse cx="112" cy="178" rx="18" ry="18" class="tk o"/><ellipse cx="336" cy="178" rx="18" ry="18" class="tk o"/>
-    <rect x="94" y="164" width="260" height="27" rx="13" fill="${G}" class="o"/>${wheels([148,188,228,268,308])}`;
-  if(!Z.casemate){
-    return S(`${tracks}
-      <polygon points="90,162 90,126 126,126 126,96 360,96 376,126 376,162" fill="${Z.f}" class="o"/>
-      <path d="M168,96 Q174,54 210,54 L288,54 Q322,54 326,96 Z" fill="${Z.tur}" class="o"/>
-      <rect x="326" y="70" width="120" height="8" rx="3" fill="${G}" class="o"/>
-      <rect x="236" y="46" width="26" height="9" rx="3" fill="${Z.t}" class="o"/>
-      <text x="78" y="120" class="lbl" text-anchor="end">Front</text>
-      <text x="247" y="42" class="lbl" text-anchor="middle">Roof · Turret</text>
-      <text x="200" y="150" class="lbl" text-anchor="middle">Side</text>
-      <text x="384" y="150" class="lbl">Rear</text>`);
-  }
-  return S(`${tracks}
-    <polygon points="90,162 90,126 150,126 176,80 330,80 350,126 376,126 376,162" fill="${Z.f}" class="o"/>
-    <rect x="330" y="96" width="118" height="8" rx="3" fill="${G}" class="o"/>
-    <text x="245" y="70" class="lbl" text-anchor="middle">Fixed casemate — no turret</text>
-    <text x="78" y="120" class="lbl" text-anchor="end">Front</text>
-    <text x="200" y="150" class="lbl" text-anchor="middle">Side</text>
-    <text x="384" y="150" class="lbl">Rear</text>`);
+  const R=CV.red,O=CV.orange,G=CV.green;
+  const Z={light:{f:G,tur:G,t:G,cas:false},medium:{f:O,tur:O,t:G,cas:false},heavy:{f:R,tur:R,t:G,cas:false},mtd:{f:O,cas:true},htd:{f:O,cas:true}}[kind];
+  const S=(i)=>`<svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${kind} armor profile"><defs><style>.o{stroke:#0c0f08;stroke-width:1.4}.tk{fill:#171c10}.lbl{font:600 10px 'IBM Plex Mono',monospace;fill:var(--sand)}</style></defs>${i}</svg>`;
+  const w=(xs)=>xs.map(x=>`<circle cx="${x}" cy="178" r="10" fill="#20281733" class="o"/>`).join("");
+  const tr=`<ellipse cx="112" cy="178" rx="18" ry="18" class="tk o"/><ellipse cx="336" cy="178" rx="18" ry="18" class="tk o"/><rect x="94" y="164" width="260" height="27" rx="13" fill="${G}" class="o"/>${w([148,188,228,268,308])}`;
+  if(!Z.cas) return S(`${tr}<polygon points="90,162 90,126 126,126 126,96 360,96 376,126 376,162" fill="${Z.f}" class="o"/><path d="M168,96 Q174,54 210,54 L288,54 Q322,54 326,96 Z" fill="${Z.tur}" class="o"/><rect x="326" y="70" width="120" height="8" rx="3" fill="${G}" class="o"/><rect x="236" y="46" width="26" height="9" rx="3" fill="${Z.t}" class="o"/><text x="78" y="120" class="lbl" text-anchor="end">Front</text><text x="247" y="42" class="lbl" text-anchor="middle">Roof · Turret</text><text x="200" y="150" class="lbl" text-anchor="middle">Side</text><text x="384" y="150" class="lbl">Rear</text>`);
+  return S(`${tr}<polygon points="90,162 90,126 150,126 176,80 330,80 350,126 376,126 376,162" fill="${Z.f}" class="o"/><rect x="330" y="96" width="118" height="8" rx="3" fill="${G}" class="o"/><text x="245" y="70" class="lbl" text-anchor="middle">Fixed casemate — no turret</text><text x="78" y="120" class="lbl" text-anchor="end">Front</text><text x="200" y="150" class="lbl" text-anchor="middle">Side</text><text x="384" y="150" class="lbl">Rear</text>`);
 }
 
-/* ---- data: mm plate thickness. f=hull front upper, tur=turret front (null=casemate),
-   s=hull side upper, r=hull rear, t=roof. out=armor outlier. ol="Aim" note:
-   consistent format everywhere -> "<where to shoot> — <reason / mm>." ---- */
+/*  tags: out=outlier, fa=fast, sl=sloped, op=open top
+    In-game speeds sourced from Steam community speed tests.
+    Sloped: tanks whose plate angles give effective armor well above raw mm.
+    Open top: roof is exposed — HE, grenades and plunging fire are lethal. */
 const CLASSES=[
  {id:"light",name:"Light Tanks",tag:"Recon · Flankers",
   desc:"Thin everywhere — most plates sit in the green. Speed is the only defence; kill them from any facing before they circle you.",
   tanks:{
    ger:[
-    {n:"Panzer I",p:"Starter",f:13,tur:15,s:13,r:13,t:6,ol:"Anywhere — 13 mm hull, 6 mm roof; MG-only."},
-    {n:"Panzer II C",p:"Light",f:15,tur:15,s:15,r:15,t:10,ol:"Anywhere but the mantlet — .50-cal pens the 15 mm plates; 30 mm gun mantlet holds."},
-    {n:"Panzer 38(t)",p:"Light",f:50,tur:50,s:30,r:15,t:8,ol:"Lower side & rear — 15 mm; the 50 mm front holds."},
-    {n:"Panzer II L (Luchs)",p:"Recon",f:30,tur:30,s:20,r:20,t:13,ol:"Sides & rear — 20 mm behind the sloped 30 mm front."}
+    {n:"Panzer I",f:13,tur:15,s:13,r:13,t:6,ol:"Anywhere — 13 mm hull, 6 mm roof."},
+    {n:"Panzer II C",f:15,tur:15,s:15,r:15,t:10,ol:"Anywhere but the mantlet — 30 mm gun mantlet holds."},
+    {n:"Panzer 38(t)",f:50,tur:50,s:30,r:15,t:8,ol:"Lower side & rear — 15 mm; the 50 mm front holds."},
+    {n:"Panzer II L (Luchs)",f:30,tur:30,s:20,r:20,t:13,ol:"Sides & rear — 20 mm."}
    ],
    usa:[
-    {n:"M2A2",p:"Starter",f:16,tur:16,s:13,r:7,t:7,ol:"Rear & roof — 7 mm; MG-only."},
-    {n:"M5A1 Stuart",p:"Light",out:1,f:29,tur:44,s:29,r:25,t:13,ol:"Sides, rear or roof — the lower front (38–64 mm) is thicker than the upper."},
-    {n:"M24 Chaffee",p:"Recon",out:1,f:30,tur:15,s:13,r:13,t:10,ol:"Turret — 15 mm, far softer than the 30 mm hull."}
+    {n:"M2A2",f:16,tur:16,s:13,r:7,t:7,ol:"Rear & roof — 7 mm."},
+    {n:"M5A1 Stuart",out:1,f:29,tur:44,s:29,r:25,t:13,ol:"Sides, rear or roof — the lower front (38–64 mm) is thicker than the upper."},
+    {n:"M24 Chaffee",f:30,tur:15,s:13,r:13,t:10,ol:"Turret — 15 mm; sides 13 mm."}
    ],
    sov:[
-    {n:"T-38",p:"Amphib",out:1,f:9,tur:9,s:9,r:9,t:4,ol:"Roof — 4 mm, pens to MG42 / M1919; ~9 mm everywhere else."},
-    {n:"T-26",p:"Starter",f:15,tur:15,s:15,r:15,t:6,ol:"Anywhere — 15 mm box."},
-    {n:"BT-7",p:"Light",f:30,tur:15,s:13,r:13,t:10,ol:"Sides & turret — all ≤15 mm; weakest light armor."},
-    {n:"T-70",p:"Light",f:40,tur:60,s:16,r:16,t:10,ol:"Sides & rear — 16 mm behind the sloped 40 mm front."}
+    {n:"T-38",f:9,tur:9,s:9,r:9,t:4,ol:"Roof — 4 mm; ~9 mm everywhere else."},
+    {n:"T-26",f:15,tur:15,s:15,r:15,t:6,ol:"Anywhere — 15 mm box."},
+    {n:"BT-7",f:30,tur:15,s:13,r:13,t:10,ol:"Sides & turret — all ≤15 mm."},
+    {n:"T-70",sl:1,f:40,tur:60,s:16,r:16,t:10,ol:"Sides & rear — 16 mm behind the sloped 40 mm front."}
    ]
   }},
 
@@ -211,19 +68,19 @@ const CLASSES=[
   desc:"Fronts get real (50–80 mm) so head-on is a gamble. Sides, rear and the turret ring stay soft — flank, or take the weak plate.",
   tanks:{
    ger:[
-    {n:"Panzer III J",p:"Medium",f:50,tur:30,s:30,r:50,t:17,ol:"Turret — 30 mm, thinner than the 50 mm hull."},
-    {n:"Panzer IV H",p:"Medium",out:1,f:80,tur:50,s:30,r:20,t:12,ol:"Turret — 50 mm, the thinnest of any medium, even though the hull front is the thickest."},
-    {n:"Panther G",p:"Medium",out:1,f:80,tur:110,s:50,r:40,t:16,ol:"Flanks — 40–50 mm, thinner than some light tanks; lower front is 60 mm."}
+    {n:"Panzer III J",f:50,tur:30,s:30,r:50,t:17,ol:"Turret — 30 mm, thinner than the 50 mm hull."},
+    {n:"Panzer IV H",f:80,tur:50,s:30,r:20,t:12,ol:"Turret — 50 mm; sides 30 mm, rear 20 mm."},
+    {n:"Panther G",out:1,sl:1,f:80,tur:110,s:50,r:40,t:16,ol:"Flanks — 40–50 mm, thinner than some light tanks; lower front is 60 mm."}
    ],
    usa:[
-    {n:"M3 Lee",p:"Medium",f:51,tur:51,s:38,r:38,t:13,ol:"Sides — 38 mm on a tall, wide hull."},
-    {n:"M4A1 Sherman",p:"Medium",f:51,tur:76,s:38,r:38,t:13,ol:"Sides & rear — 38 mm."},
-    {n:"M4A3E8 (Easy 8)",p:"Medium",f:64,tur:64,s:38,r:38,t:19,ol:"Sides & rear — 38 mm; only a hair tougher than the Sherman."}
+    {n:"M3 Lee",f:51,tur:51,s:38,r:38,t:13,ol:"Sides — 38 mm on a tall, wide hull."},
+    {n:"M4A1 Sherman",sl:1,f:51,tur:76,s:38,r:38,t:13,ol:"Sides & rear — 38 mm."},
+    {n:"M4A3E8 (Easy 8)",sl:1,f:64,tur:64,s:38,r:38,t:19,ol:"Sides & rear — 38 mm."}
    ],
    sov:[
-    {n:"T-28",p:"Medium",f:30,tur:20,s:20,r:18,t:10,ol:"Anywhere — 18–30 mm; softer than the T-70 light."},
-    {n:"T-34/76",p:"Medium",f:65,tur:70,s:45,r:45,t:20,ol:"Turret ring & flanks — 45 mm sides behind the sloped 65 mm front."},
-    {n:"T-34-85",p:"Medium",out:1,f:45,tur:90,s:45,r:45,t:20,ol:"Front & sides, not the rear — the 45 mm rear bounces better than the front."}
+    {n:"T-28",f:30,tur:20,s:20,r:18,t:10,ol:"Anywhere — 18–30 mm; softer than the T-70 light."},
+    {n:"T-34/76",sl:1,f:65,tur:70,s:45,r:45,t:20,ol:"Turret ring & flanks — 45 mm sides behind the sloped 65 mm front."},
+    {n:"T-34-85",out:1,sl:1,f:45,tur:90,s:45,r:45,t:20,ol:"Front & sides, not the rear — the 45 mm rear bounces better than the front."}
    ]
   }},
 
@@ -231,16 +88,16 @@ const CLASSES=[
   desc:"Fronts and turrets are walls (100–180 mm). Your green is narrow: the roof from above, the rear, or a specific frontal weak spot.",
   tanks:{
    ger:[
-    {n:"Tiger I",p:"Heavy",f:100,tur:80,s:80,r:80,t:20,ol:"Turret / gun, or the 60 mm lower side — flat armor takes shells honestly."},
-    {n:"Tiger II (King Tiger)",p:"Heavy",out:1,f:150,tur:180,s:80,r:80,t:40,ol:"Roof, rear or the MG port — the 150 / 180 mm front bounces almost everything."}
+    {n:"Tiger I",f:100,tur:80,s:80,r:80,t:20,ol:"Turret / gun, or the 60 mm lower side — flat armor takes shells honestly."},
+    {n:"Tiger II (King Tiger)",out:1,sl:1,f:150,tur:180,s:80,r:80,t:40,ol:"Roof, rear or the MG port — the 150 / 180 mm front bounces almost everything."}
    ],
    usa:[
-    {n:"Sherman Jumbo",p:"Heavy",out:1,f:101,tur:150,s:76,r:38,t:19,ol:"Lower side & rear — 38 mm; the turret rivals the King Tiger."},
-    {n:"M26 Pershing",p:"Heavy",f:100,tur:100,s:76,r:51,t:22,ol:"Rear-bottom (19 mm) & roof (22 mm) — the angled turret ricochets."}
+    {n:"Sherman Jumbo",out:1,f:101,tur:150,s:76,r:38,t:19,ol:"Lower side & rear — 38 mm; the turret rivals the King Tiger."},
+    {n:"M26 Pershing",sl:1,f:100,tur:100,s:76,r:51,t:22,ol:"Rear-bottom (19 mm) & roof (22 mm) — the angled turret ricochets."}
    ],
    sov:[
-    {n:"KV-85",p:"Heavy",f:75,tur:82,s:60,r:75,t:30,ol:"Upper side (60 mm) & roof (30 mm) — flank the 75 mm slab."},
-    {n:"IS-2",p:"Heavy",out:1,f:120,tur:90,s:90,r:60,t:20,ol:"Rear (60 mm) & roof (20 mm) — the 120 mm front bounces RPGs."}
+    {n:"KV-85",out:1,f:75,tur:82,s:60,r:75,t:30,ol:"Front — 75 mm (orange), the only heavy whose front is penetrable with APCR."},
+    {n:"IS-2",out:1,sl:1,f:120,tur:90,s:90,r:60,t:20,ol:"Rear (60 mm) & roof (20 mm) — the 120 mm front bounces RPGs."}
    ]
   }},
 
@@ -248,16 +105,16 @@ const CLASSES=[
   desc:"Big gun in a fixed casemate — no turret to swing at a flanker. Nasty head-on, helpless once you're on a side or the rear.",
   tanks:{
    ger:[
-    {n:"Hetzer",p:"Med TD",f:60,tur:null,s:20,r:20,t:10,ol:"Sides & rear — 20 mm; the sloped front holds at range."},
-    {n:"StuG III F",p:"Med TD",f:80,tur:null,s:30,r:30,t:17,ol:"Gun mantlet (50 mm) or flanks — the 80 mm front resists all but heavies."}
+    {n:"Hetzer",sl:1,f:60,tur:null,s:20,r:20,t:10,ol:"Sides & rear — 20 mm; the sloped front holds at range."},
+    {n:"StuG III F",f:80,tur:null,s:30,r:30,t:17,ol:"Gun mantlet (50 mm) or flanks — the 80 mm front resists all but heavies."}
    ],
    usa:[
-    {n:"M10 Wolverine",p:"Med TD",f:38,tur:40,s:19,r:19,t:19,ol:"Sides (~19 mm) or tracks — open-topped turret."},
-    {n:"M18 Hellcat",p:"Med TD",out:1,f:13,tur:25,s:13,r:13,t:8,ol:"Anywhere — 13 mm paper and a 0 mm open-top turret."}
+    {n:"M10 Wolverine",op:1,f:38,tur:40,s:19,r:19,t:19,ol:"Sides (~19 mm) or tracks — open-topped turret."},
+    {n:"M18 Hellcat",out:1,op:1,f:13,tur:25,s:13,r:13,t:8,ol:"Anywhere — 13 mm paper and a 0 mm open-top turret."}
    ],
    sov:[
-    {n:"SU-76M",p:"Med TD",f:30,tur:null,s:15,r:15,t:null,ol:"Anywhere — 15 mm sides and an open top."},
-    {n:"SU-85",p:"Med TD",f:45,tur:null,s:45,r:45,t:20,ol:"Flanks — 45 mm; no MG, so rush it with infantry."}
+    {n:"SU-76M",op:1,f:30,tur:null,s:15,r:15,t:null,ol:"Anywhere — 15 mm sides and an open top."},
+    {n:"SU-85",sl:1,f:45,tur:null,s:45,r:45,t:20,ol:"Flanks — 45 mm T-34 hull; no MG, rush it with infantry."}
    ]
   }},
 
@@ -265,13 +122,13 @@ const CLASSES=[
   desc:"The heaviest guns in the game on lightly-built hulls. Their front can trade, but the flanks fold — force the angle.",
   tanks:{
    ger:[
-    {n:"Jagdpanther",p:"Hvy TD",out:1,f:80,tur:null,s:50,r:40,t:16,ol:"Any facing at its tier — 40–80 mm, weak for a heavy TD; snipe it from range."}
+    {n:"Jagdpanther",sl:1,f:80,tur:null,s:50,r:40,t:16,ol:"Sides (50 mm) & rear (40 mm) — 80 mm sloped front holds."}
    ],
    usa:[
-    {n:"M36 Jackson",p:"Hvy TD",f:38,tur:40,s:19,r:19,t:19,ol:"Sides (~19 mm) — an M10 hull with a rotating turret."}
+    {n:"M36 Jackson",out:1,op:1,f:38,tur:40,s:19,r:19,t:19,ol:"Anywhere — 38 mm front, 19 mm sides; a \"heavy TD\" weaker than most medium TDs."}
    ],
    sov:[
-    {n:"SU-100",p:"Hvy TD",f:75,tur:null,s:45,r:45,t:20,ol:"Flanks — 45 mm behind the 75 mm sloped front."}
+    {n:"SU-100",sl:1,f:75,tur:null,s:45,r:45,t:20,ol:"Flanks — 45 mm behind the 75 mm sloped front."}
    ]
   }}
 ];
@@ -286,17 +143,22 @@ CLASSES.forEach((k,i)=>{
   const roster=["ger","usa","sov"].map(f=>{
     const list=k.tanks[f]; if(!list||!list.length) return "";
     return `<div class="fac">
-      <div class="fac-h">${emblem[f]}<span class="name">${facName[f]}</span></div>
+      <div class="fac-h">${emb[f]}<span class="name">${facN[f]}</span></div>
       ${list.map(t=>{
-        const hits=facing.map(([key,lab])=>{
-          const v=t[key], c=col(v);
+        const hits=fac.map(([key,lab])=>{
+          const v=t[key],c=col(v);
           const inner=c==="cas"?"none":String(v);
-          const bg=c==="cas"?"":`style="background:${CVAR[c]}"`;
+          const bg=c==="cas"?"":`style="background:${CV[c]}"`;
           return `<div class="hit"><div class="bar ${c==="cas"?"cas":""}" ${bg}>${inner}</div><div class="fl">${lab}</div></div>`;
         }).join("");
-        const chip=t.out?'<span class="chip-out">Outlier</span>':"";
+        const chips=
+          (t.out?CHIP.out:"")+
+          (t.sl?CHIP.sloped:"")+
+          (t.op?CHIP.open:"");
         const ol=t.ol?`<div class="ol"><span class="tag">Aim</span><span>${t.ol}</span></div>`:"";
-        return `<div class="tank${t.out?" out":""}"><div class="tn"><span class="nm">${t.n}${chip}</span><span class="pill">${t.p}</span></div><div class="hits">${hits}</div>${ol}</div>`;
+        return `<div class="tank${t.out?" out":""}">
+          <div class="tn"><span class="nm">${t.n}</span><span class="tags">${chips}</span></div>
+          <div class="hits">${hits}</div>${ol}</div>`;
       }).join("")}
     </div>`;
   }).join("");
@@ -312,8 +174,8 @@ CLASSES.forEach((k,i)=>{
 
 document.getElementById("footnote").innerHTML=
   'Colour bands (≤40 / 41–80 / &gt;80 mm) are a reading aid applied to plate thickness, not a game value. '+
-  'Sloped fronts (Tiger II, T-70, T-34, SU-100) resist more than the raw number, and H&amp;G\'s "Armor 2.0" '+
-  'tuning means in-game penetration won\'t always match the millimetres — treat this as doctrine and verify against the in-game armor viewer.';
+  '<b>Sloped</b>-tagged tanks resist more than the raw number — flank them. '+
+  'H&amp;G\'s "Armor 2.0" tuning means in-game penetration won\'t always match the millimetres — treat this as doctrine and verify against the in-game armor viewer.';
 
 function select(id){
   document.querySelectorAll(".cn-btn").forEach(b=>b.classList.toggle("on",b.dataset.k===id));
@@ -322,7 +184,4 @@ function select(id){
 }
 document.querySelectorAll("img.emblem").forEach(img=>{
   img.onerror=()=>{img.onerror=null;img.src="data:image/svg+xml;utf8,"+encodeURIComponent(FB[img.dataset.fac]);};
-});
-</script>
-</body>
-</html>
+});</script></body></html>
